@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Open in eBay</title>
+<style>
+:root{color-scheme:light dark}
+body{font:17px/1.4 -apple-system,system-ui,sans-serif;margin:0;display:grid;place-items:center;min-height:100vh;padding:16px;text-align:center}
+a.btn{display:inline-block;margin:8px;padding:14px 22px;border-radius:12px;background:#3665f3;color:#fff;text-decoration:none;font-weight:600}
+a.alt{display:block;margin-top:14px;color:inherit;opacity:.7;font-size:15px}
+</style></head><body><main>
+<p id="msg">Opening in the eBay app…</p>
+<a class="btn" id="open" href="#">Open item in eBay</a>
+<a class="alt" id="web" href="#">Open in browser instead</a>
+</main>
+<script>
+(function(){
+  var id=(new URLSearchParams(location.search).get('id')||'').replace(/\D/g,'');
+  var m=document.getElementById('msg');
+  if(!id){m.textContent='No item id given.';document.getElementById('open').style.display='none';document.getElementById('web').style.display='none';return;}
+  var web='https://www.ebay.co.uk/itm/'+id;
+  var app='ebay://link?nav=item.view&id='+id;
+  document.getElementById('open').href=web;   // universal link: opens the eBay app when tapped on iOS
+  document.getElementById('web').href=web;
+  var hidden=false;document.addEventListener('visibilitychange',function(){if(document.hidden)hidden=true;});
+  location.href=app;                           // try the app scheme straight away
+  setTimeout(function(){if(!hidden){m.textContent='Tap the button to open the item.';}},1500);
+})();
+</script></body></html>
